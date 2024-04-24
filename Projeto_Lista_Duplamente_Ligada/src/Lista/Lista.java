@@ -9,14 +9,15 @@ package Lista;
  * @author renan.mssouza
  */
 import Modelo.Pessoa;
+
 public class Lista {
-
+    
     private Celula inicio, atual, aux;
-
+    
     public boolean isListaVazia() {
         return inicio == null;
     }
-
+    
     public void inserir(Object objeto) {
         if (isListaVazia()) {
             inicio = new Celula(null, null, objeto);
@@ -27,7 +28,7 @@ public class Lista {
             aux = atual;
         }
     }
-
+    
     public void Exibir() {
         Celula c = inicio;
         while (c != null) {
@@ -35,22 +36,39 @@ public class Lista {
             c = c.getProx();
         }
     }
-
+    
     public Celula pesquisar(int id, Celula p) {
         Pessoa pessoa;
-        while(p != null){
-            pessoa = (Pessoa)p.getDados();
-            if(id==pessoa.getId()){
+        while (p != null) {
+            pessoa = (Pessoa) p.getDados();
+            if (id == pessoa.getId()) {
                 return p;
             }
-            p=p.getProx();
-        } 
+            p = p.getProx();
+        }        
         
         return null;
     }
-
+    
     public boolean remover(int id) {
-        pesquisar(id, inicio);
+        Celula p = pesquisar(id, inicio);
+        if (p != null) {
+            if (p == inicio) {
+                inicio = p.getProx();
+                p.setProx(null);
+                inicio.setAnt(null);
+            } else if (p == atual) {
+                atual = p.getAnt();
+                aux = atual;
+                atual.setProx(null);
+                p.setAnt(null);
+            } else {
+                p.getAnt().setProx(p.getProx());
+                p.getProx().setAnt(p.getAnt());
+            }
+            return true;
+        }
+        
         return false;
     }
 }
